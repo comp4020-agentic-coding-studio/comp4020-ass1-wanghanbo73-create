@@ -202,3 +202,8 @@ After changes to the core interaction:
 - Verify that the utilisation slider works using keyboard controls.
 - Check that the difference between 50–70% utilisation and 90–98% utilisation is visually obvious.
 - Run `pnpm check` before accepting the change.
+
+### Causal explanation rules
+
+- When possible, show the cause of a change rather than only showing its result.
+- Directional process visuals should follow a natural and immediately understandable flow.
