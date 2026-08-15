@@ -170,3 +170,35 @@ catching you out, a fact about the stack the agent keeps getting wrong --- write
 it down here. Growing this file is the work of harness engineering, and the gap
 between this boilerplate and your own version is part of what your prototype
 says about the developer you're becoming.
+
+## Assignment 1: interactive explainer
+
+### Core idea
+
+This prototype should communicate one idea clearly:
+
+> A system does not need to reach 100% utilisation before waiting time becomes extremely large.
+
+The main interaction is a single utilisation slider. Keep the prototype focused
+on this interaction and do not introduce additional controls unless they are
+necessary to explain the core idea.
+
+### Visual explanation rules
+
+- The interaction itself should explain the idea without relying on long supporting text.
+- Abstract visual elements must have enough context to make their meaning immediately clear.
+- Avoid unlabeled floating dots, shapes, or charts.
+- A queue visualisation should visibly read as people waiting for a service, even when the queue contains only one person.
+- Charts should include the minimum labels needed to understand what each axis represents.
+- Do not add extra controls to solve a communication problem.
+- Prefer improving the explanatory meaning of the existing interaction over adding more content.
+
+### Verification
+
+After changes to the core interaction:
+
+- Check the rendered page at both 1920×1080 and approximately 390×844.
+- Verify that no horizontal scrolling appears.
+- Verify that the utilisation slider works using keyboard controls.
+- Check that the difference between 50–70% utilisation and 90–98% utilisation is visually obvious.
+- Run `pnpm check` before accepting the change.
