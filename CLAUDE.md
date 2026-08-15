@@ -18,6 +18,15 @@ you plan or build, and see `spec/README.md` for how the checks relate to them.
 
 ## How to work in here
 
+- This machine runs Git Bash on Windows, not WSL2. `pnpm install`'s `prepare`
+  script (`git rev-parse ... && git config core.hooksPath .githooks`) fails
+  silently here because pnpm runs it through `cmd.exe`, which doesn't
+  understand `/dev/null` — you'll see a garbled "system cannot find the path
+  specified" error. `|| true` swallows the exit code, so nothing looks broken,
+  but the hooks path never gets set, which means the pre-commit secret scan
+  never runs. After every fresh clone or `pnpm install`, check
+  `git config core.hooksPath` — if it's empty, run
+  `git config core.hooksPath .githooks` manually.
 - Keep the dev server running (`pnpm dev`) so you see changes as you make them.
 - Before you push, run `pnpm check`. It runs most of what CI runs --- build,
   lint, and the spec --- so you catch those in seconds instead of waiting for
