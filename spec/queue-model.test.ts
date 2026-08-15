@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_UTIL, MAX_WAIT_MIN, MIN_UTIL, queueLength, waitMinutes } from "../queue-model";
+import { MAX_UTIL, MAX_WAIT_MIN, MIN_UTIL, queueLength, spareCapacity, waitMinutes } from "../queue-model";
 
 describe("queue-model", () => {
   it("matches known M/M/1-style sample values", () => {
@@ -50,5 +50,11 @@ describe("queue-model", () => {
     expect(queueLength(0.5)).toBeCloseTo(1, 3);
     expect(queueLength(0.9)).toBeCloseTo(9, 3);
     expect(queueLength(MAX_UTIL)).toBeCloseTo(99, 3);
+  });
+
+  it("spare capacity is the complement of utilisation", () => {
+    expect(spareCapacity(0.5)).toBeCloseTo(0.5, 3);
+    expect(spareCapacity(0.9)).toBeCloseTo(0.1, 3);
+    expect(spareCapacity(MIN_UTIL)).toBeCloseTo(0.9, 3);
   });
 });

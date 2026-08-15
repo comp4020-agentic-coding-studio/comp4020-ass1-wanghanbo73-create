@@ -43,6 +43,23 @@ describe("90% Full Is Almost Broken", () => {
     expect(doc.querySelector(".chart-hot-band")).toBeTruthy();
   });
 
+  it("labels the near-capacity region as Near capacity", () => {
+    expect(doc.querySelector(".chart")?.textContent).toMatch(/near capacity/i);
+  });
+
+  it("shows spare capacity as a derived value alongside the result", () => {
+    expect(doc.querySelector(".result #spare-value")).toBeTruthy();
+  });
+
+  it("orders the queue so it reads as people waiting, then service", () => {
+    const track = doc.querySelector(".queue-track");
+    const children = Array.from(track?.children ?? []);
+    const rowIndex = children.findIndex((el) => el.classList.contains("queue-row"));
+    const serviceIndex = children.findIndex((el) => el.classList.contains("queue-service"));
+    expect(rowIndex).toBeGreaterThanOrEqual(0);
+    expect(serviceIndex).toBeGreaterThan(rowIndex);
+  });
+
   it("has the exact takeaway line", () => {
     expect(doc.body.textContent).toContain("A system doesn't need to be full to feel overloaded.");
   });

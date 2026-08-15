@@ -1,4 +1,12 @@
-import { MAX_UTIL, MAX_WAIT_MIN, MIN_UTIL, queueLength, sampleCurve, waitMinutes } from "./queue-model";
+import {
+  MAX_UTIL,
+  MAX_WAIT_MIN,
+  MIN_UTIL,
+  queueLength,
+  sampleCurve,
+  spareCapacity,
+  waitMinutes,
+} from "./queue-model";
 
 const CHART_WIDTH = 300;
 const CHART_HEIGHT = 160;
@@ -11,6 +19,7 @@ const valueOutput = document.querySelector<HTMLOutputElement>("#utilisation-valu
 const waitValue = document.querySelector<HTMLElement>("#wait-value");
 const queueValue = document.querySelector<HTMLElement>("#queue-value");
 const queueNoun = document.querySelector<HTMLElement>("#queue-noun");
+const spareValue = document.querySelector<HTMLElement>("#spare-value");
 const queueRow = document.querySelector<HTMLElement>("#queue-row");
 const queueOverflow = document.querySelector<HTMLElement>("#queue-overflow");
 const chartPath = document.querySelector<SVGPathElement>("#chart-path");
@@ -77,6 +86,7 @@ function render(percent: number): void {
   if (waitValue) waitValue.textContent = waitText;
   if (queueValue) queueValue.textContent = `${queue}`;
   if (queueNoun) queueNoun.textContent = queue === 1 ? "person" : "people";
+  if (spareValue) spareValue.textContent = `${Math.round(spareCapacity(u) * 100)}`;
 
   renderQueue(queue);
 

@@ -16,6 +16,10 @@ export function queueLength(utilisation: number): number {
   return utilisation / (1 - utilisation);
 }
 
+export function spareCapacity(utilisation: number): number {
+  return 1 - utilisation;
+}
+
 export const MAX_WAIT_MIN = waitMinutes(MAX_UTIL);
 
 export interface CurvePoint {
