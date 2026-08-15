@@ -29,6 +29,20 @@ describe("90% Full Is Almost Broken", () => {
     expect(doc.querySelector(".queue-row")).toBeTruthy();
   });
 
+  it("gives the queue a labelled service endpoint, so it reads even with one dot", () => {
+    expect(doc.querySelector(".queue-service")).toBeTruthy();
+    expect(doc.querySelector(".queue-service-label")?.textContent).toBeTruthy();
+  });
+
+  it("labels what each chart axis represents", () => {
+    expect(doc.querySelector(".chart-axis-x")?.textContent).toMatch(/utilisation/i);
+    expect(doc.querySelector(".chart-axis-y")?.textContent).toMatch(/wait/i);
+  });
+
+  it("visually marks the near-capacity region on the chart", () => {
+    expect(doc.querySelector(".chart-hot-band")).toBeTruthy();
+  });
+
   it("has the exact takeaway line", () => {
     expect(doc.body.textContent).toContain("A system doesn't need to be full to feel overloaded.");
   });

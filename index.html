@@ -34,7 +34,13 @@
 
       <section class="queue" aria-hidden="true">
         <p class="queue-label">Queue</p>
-        <div class="queue-row" id="queue-row"></div>
+        <div class="queue-track">
+          <div class="queue-service">
+            <span class="queue-service-icon"></span>
+            <span class="queue-service-label">Service</span>
+          </div>
+          <div class="queue-row" id="queue-row"></div>
+        </div>
         <p class="queue-overflow" id="queue-overflow" hidden></p>
       </section>
 
@@ -49,15 +55,18 @@
       </section>
 
       <section class="chart">
+        <p class="chart-axis chart-axis-y" aria-hidden="true">Wait time <span>↑</span></p>
         <svg
           id="chart"
           viewBox="0 0 300 160"
           role="img"
-          aria-label="Chart of estimated wait time against utilisation, rising sharply as utilisation nears 99 percent"
+          aria-label="Chart of estimated wait time against utilisation. The curve stays low until about 90 percent, then rises sharply toward 99 percent; that near-capacity range is shaded."
         >
+          <rect id="chart-hot-band" class="chart-hot-band" />
           <path id="chart-path" class="chart-path" />
           <circle id="chart-marker" class="chart-marker" r="5" />
         </svg>
+        <p class="chart-axis chart-axis-x" aria-hidden="true">Utilisation <span>→</span></p>
       </section>
 
       <p class="takeaway">

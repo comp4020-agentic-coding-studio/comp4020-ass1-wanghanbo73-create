@@ -15,6 +15,7 @@ const queueRow = document.querySelector<HTMLElement>("#queue-row");
 const queueOverflow = document.querySelector<HTMLElement>("#queue-overflow");
 const chartPath = document.querySelector<SVGPathElement>("#chart-path");
 const chartMarker = document.querySelector<SVGCircleElement>("#chart-marker");
+const chartHotBand = document.querySelector<SVGRectElement>("#chart-hot-band");
 
 function formatMinutes(minutes: number): string {
   const rounded = minutes < 10 ? Math.round(minutes * 10) / 10 : Math.round(minutes);
@@ -35,6 +36,15 @@ function drawCurve(): void {
     .map((point, i) => `${i === 0 ? "M" : "L"} ${xFor(point.u).toFixed(1)} ${yFor(point.wait).toFixed(1)}`)
     .join(" ");
   chartPath.setAttribute("d", d);
+}
+
+function drawHotBand(): void {
+  if (!chartHotBand) return;
+  const xStart = xFor(HOT_THRESHOLD_PERCENT / 100);
+  chartHotBand.setAttribute("x", xStart.toFixed(1));
+  chartHotBand.setAttribute("y", CHART_PADDING.toFixed(1));
+  chartHotBand.setAttribute("width", (CHART_WIDTH - CHART_PADDING - xStart).toFixed(1));
+  chartHotBand.setAttribute("height", (CHART_HEIGHT - 2 * CHART_PADDING).toFixed(1));
 }
 
 function renderQueue(rawCount: number): void {
@@ -84,6 +94,7 @@ function render(percent: number): void {
 
 if (slider) {
   drawCurve();
+  drawHotBand();
   render(Number(slider.value));
   slider.addEventListener("input", () => render(Number(slider.value)));
 }
