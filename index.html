@@ -32,47 +32,62 @@
         <input type="range" id="utilisation" min="10" max="99" step="1" value="50" />
       </section>
 
-      <section class="queue" aria-hidden="true">
-        <p class="queue-label">Queue</p>
-        <div class="queue-track">
-          <div class="queue-row" id="queue-row"></div>
-          <span class="queue-arrow" aria-hidden="true">→</span>
-          <div class="queue-service">
-            <span class="queue-service-icon"></span>
-            <span class="queue-service-label">Service</span>
+      <div class="stage">
+        <section class="queue" aria-hidden="true">
+          <p class="queue-label">Queue</p>
+          <div class="queue-track">
+            <div class="queue-row" id="queue-row"></div>
+            <span class="queue-arrow" aria-hidden="true">→</span>
+            <div class="queue-service">
+              <span class="queue-service-icon"></span>
+              <span class="queue-service-label">Service</span>
+            </div>
           </div>
-        </div>
-        <p class="queue-overflow" id="queue-overflow" hidden></p>
-      </section>
+          <p class="queue-overflow" id="queue-overflow" hidden></p>
+        </section>
 
-      <section class="result" aria-live="polite">
-        <p class="result-line">
-          <span class="result-label">Estimated wait</span>
-          <strong id="wait-value" class="result-value">1.0 minutes</strong>
-        </p>
-        <p class="result-sub">
-          <span id="queue-value">1</span> <span id="queue-noun">person</span> ahead of you ·
-          <span id="spare-value">50</span>% spare capacity
-        </p>
-      </section>
+        <section class="result" aria-live="polite">
+          <p class="result-line">
+            <span class="result-label">Estimated wait</span>
+            <strong id="wait-value" class="result-value">1.0 minutes</strong>
+          </p>
+          <p class="result-sub">
+            <span id="queue-value">1</span> <span id="queue-noun">person</span> ahead of you ·
+            <span id="spare-value">50</span>% spare capacity
+          </p>
+        </section>
 
-      <section class="chart">
-        <p class="chart-axis chart-axis-y" aria-hidden="true">Wait time <span>↑</span></p>
-        <div class="chart-frame">
-          <svg
-            id="chart"
-            viewBox="0 0 300 160"
-            role="img"
-            aria-label="Chart of estimated wait time against utilisation. The curve stays low until about 90 percent, then rises sharply toward 99 percent; the 90 to 99 percent range is labelled Near capacity."
-          >
-            <rect id="chart-hot-band" class="chart-hot-band" />
-            <path id="chart-path" class="chart-path" />
-            <circle id="chart-marker" class="chart-marker" r="5" />
-          </svg>
-          <span class="chart-hot-label" aria-hidden="true">Near capacity</span>
-        </div>
-        <p class="chart-axis chart-axis-x" aria-hidden="true">Utilisation <span>→</span></p>
-      </section>
+        <section class="chart">
+          <p class="chart-axis chart-axis-y" aria-hidden="true">Wait time <span>↑</span></p>
+          <div class="chart-frame">
+            <svg
+              id="chart"
+              viewBox="0 0 300 160"
+              role="img"
+              aria-label="Chart of estimated wait time against utilisation. The curve stays low until about 90 percent, then rises sharply toward 99 percent; the 90 to 99 percent range is labelled Near capacity."
+            >
+              <defs>
+                <linearGradient id="chart-line-gradient" x1="0" x2="1" y1="0" y2="0">
+                  <stop class="stop-accent" offset="0%" />
+                  <stop class="stop-accent" offset="67%" />
+                  <stop class="stop-warning" offset="68%" />
+                  <stop class="stop-warning" offset="90%" />
+                  <stop class="stop-danger" offset="91%" />
+                  <stop class="stop-danger" offset="100%" />
+                </linearGradient>
+              </defs>
+              <rect id="chart-hot-band" class="chart-hot-band" />
+              <line class="chart-gridline" x1="10" y1="40" x2="290" y2="40" />
+              <line class="chart-gridline" x1="10" y1="80" x2="290" y2="80" />
+              <line class="chart-gridline" x1="10" y1="120" x2="290" y2="120" />
+              <path id="chart-path" class="chart-path" />
+              <circle id="chart-marker" class="chart-marker" r="5" />
+            </svg>
+            <span class="chart-hot-label" aria-hidden="true">Near capacity</span>
+          </div>
+          <p class="chart-axis chart-axis-x" aria-hidden="true">Utilisation <span>→</span></p>
+        </section>
+      </div>
 
       <p class="takeaway">
         <strong>A system doesn't need to be full to feel overloaded.</strong>

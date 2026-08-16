@@ -13,6 +13,7 @@ const CHART_HEIGHT = 160;
 const CHART_PADDING = 10;
 const MAX_QUEUE_DOTS = 24;
 const HOT_THRESHOLD_PERCENT = 90;
+const WARNING_THRESHOLD_PERCENT = 70;
 
 const slider = document.querySelector<HTMLInputElement>("#utilisation");
 const valueOutput = document.querySelector<HTMLOutputElement>("#utilisation-value");
@@ -97,8 +98,15 @@ function render(percent: number): void {
 
   if (slider) {
     slider.setAttribute("aria-valuetext", `${percent} percent utilisation, estimated wait ${waitText}`);
+    const min = Number(slider.min);
+    const max = Number(slider.max);
+    slider.style.setProperty("--slider-fill", `${((percent - min) / (max - min)) * 100}%`);
   }
 
+  document.body.classList.toggle(
+    "is-warm",
+    percent >= WARNING_THRESHOLD_PERCENT && percent < HOT_THRESHOLD_PERCENT,
+  );
   document.body.classList.toggle("is-hot", percent >= HOT_THRESHOLD_PERCENT);
 }
 
