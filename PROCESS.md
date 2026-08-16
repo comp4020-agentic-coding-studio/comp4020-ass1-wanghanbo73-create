@@ -1,85 +1,21 @@
 # Process overview
 
-<!-- TEMPLATE: this file is a shape to fill in, not a form. Replace everything
-     in it with your own overview, and delete this comment — `pnpm
-     check:evidence` will remind you if it's still here. -->
-
-A reading-guide to how the work came together --- a map to your process, not an
-essay about it. Markers read this file and follow its citations; they don't
-trawl the repo for evidence you didn't point at, so if a moment mattered, cite
-it.
-
-This file is the shape; the course site's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#what-you-submit)
-is the requirement, and its
-[word counts](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#word-counts)
-cover every deliverable.
-
 ## What I built
 
-One paragraph: the thing, and the idea behind it.
+I built **“90% Full Is Almost Broken”**, a single-page interactive explainer showing how waiting time grows non-linearly as a system approaches full utilisation. The visitor changes one utilisation slider from 10% to 99%, while the queue, estimated waiting time, spare capacity, and chart update together. I deliberately kept the prototype to one mechanic rather than adding multiple examples or controls, because I wanted the interaction itself to carry the explanation.
 
 ## The moments that mattered
 
-Three or four for an assignment; fewer is fine for a weekly prototype. Keep the
-list short so each moment has room to do all four jobs:
+### 1. Making the model the source of truth
 
-1. **what happened** --- the problem, or the thing the agent got wrong
-2. **what you did instead of the obvious thing** --- the call you made, and why
-   it beat the obvious one
-3. **how you knew it was right** --- the check you ran, the viewport you looked
-   at, what you read before accepting the diff
-4. **the citation** --- a commit or commit range, a `CLAUDE.md` change, a check
-   that went from red to green, a prompt paired with the commit it produced
+For the first working prototype, I chose not to hard-code example wait times separately into the interface and chart. Instead, I separated the queueing model into `queue-model.ts` and made the UI and tests depend on the same functions ([`4e63f1e`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-wanghanbo73-create/commit/4e63f1e)). This gave the interaction one source of truth and reduced the risk that displayed values, the curve, and tests would drift apart. Before accepting the version, I checked the slider across its range, operated it with the keyboard, viewed it at desktop and phone widths, and ran the automated checks. The contrast I wanted was visible in both the values and the visualisation: moving from 50% to 70% changed the wait only slightly, while 90% to 98% caused a much larger increase.
 
-Jobs 2 and 3 are the ones the repo can't tell a reader on its own, so they're
-where the marks are. The strongest moments are the ones where a correction
-landed in the **harness** rather than in another prompt --- a rule added to
-`CLAUDE.md`, a check wired up, an attempt thrown away: re-prompting until it
-passes is the routine case, and changing what the agent works against is the
-skilled one.
+### 2. Correct mathematics was not enough
 
-Cite each moment as a link whose text is the commit hash or range and whose
-target is this repo's commit or compare URL, so a reader clicks straight to the
-evidence:
+Browser verification exposed something the automated tests did not. At low utilisation, the queue could appear as a single blue dot floating inside a card, and the chart showed the correct curve without enough visual context to explain what it meant. The obvious response would have been to ask Claude to make those two elements clearer. Instead, I changed the harness by adding visual-explanation rules to `CLAUDE.md` ([`25270ee`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-wanghanbo73-create/commit/25270ee)). The new rules required abstract visuals to explain themselves, required minimal chart context, and prevented communication problems from being solved by adding more controls. The resulting iteration added clearer queue semantics, a service endpoint, chart context, near-capacity shading, and overload colour feedback ([`25270ee...9a1f1a7`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-wanghanbo73-create/compare/25270ee...9a1f1a7)). I checked ordinary and near-capacity states again at both marking viewports before accepting it.
 
-- one commit: [`a1b2c3d`](https://github.com/YOUR-ORG/YOUR-REPO/commit/a1b2c3d)
-- a range:
-  [`a1b2c3d...e4f5a6b`](https://github.com/YOUR-ORG/YOUR-REPO/compare/a1b2c3d...e4f5a6b)
+### 3. Showing the result was still not explaining the cause
 
-To pair a prompt with the commit it produced, quote the prompt (curated, not a
-full transcript) next to the citation:
+The second version clearly showed that waiting time became extreme near 100%, but it still mainly communicated **what** happened rather than **why**. I did not add a paragraph or second slider. Instead, I added another harness rule requiring the interface to show causes where possible and to make directional process visuals natural ([`28859ed`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-wanghanbo73-create/commit/28859ed)). The next implementation added derived spare capacity, changed the queue to read as people moving toward service, and clarified the chart's near-capacity region ([`28859ed...3a20fc1`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-wanghanbo73-create/compare/28859ed...3a20fc1)). This kept the same single interaction while making the mechanism clearer: 98% utilisation now also means only 2% spare capacity.
 
-> the prompt, verbatim
-
-Screenshots are welcome where one carries the verification better than a
-sentence does. Commit the file to this repo and link it with a **relative**
-path, which is what makes it render on GitHub: `![alt text](docs/before.png)`.
-Images don't count towards the word count and don't replace the citation.
-
-### A worked moment, for shape
-
-Delete this section along with the rest of the boilerplate --- it's here to show
-the four jobs in one paragraph, not to be imitated in content.
-
-> The date formatter kept coming back with `toLocaleDateString()` and no locale
-> argument, so the same build rendered differently on my machine and in CI. I'd
-> already re-prompted it twice, which fixed the line but not the habit, so the
-> third time I put the rule in `CLAUDE.md` instead
-> ([`3f9ac21`](https://github.com/YOUR-ORG/YOUR-REPO/commit/3f9ac21)) and added
-> a spec test that fails on a bare `toLocaleDateString`. That's what told me it
-> had actually taken: the test went red against the old code and green against
-> the new, and the next two features it wrote passed it without prompting
-> ([`3f9ac21...b7e0d14`](https://github.com/YOUR-ORG/YOUR-REPO/compare/3f9ac21...b7e0d14)).
-
-## Before you ship
-
-`pnpm check:evidence` verifies your citations resolve to real commits, that the
-current reflection entry is in `reflections/`, and that your `CLAUDE.md` is
-there --- before a marker ever opens the file. It checks that your map is
-traceable, not that it is good: the marker judges whether your small,
-deliberately chosen set of moments shows real judgement and reflection. A green
-check is not a substitute for that curation.
-
-Images are deliberately not checked, because whether one renders is visible the
-moment you look. Open this file on GitHub and look at it before you ship.
+The final `pnpm check` passed all 33 tests, and I rechecked responsive and keyboard behaviour before treating the prototype as finished.
